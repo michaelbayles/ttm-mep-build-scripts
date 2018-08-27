@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://artifactory.trimble.tools/artifactory/ttm-mobile-ecosystem-maven'
+            credentials {
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
+            }
+        }
+    }
+}
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
+    resolve {
+        repository {
+            repoKey = 'ttm-mobile-ecosystem-maven'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+
+        }
+    }
+}
+
+android {
+    defaultConfig {
+        archivesBaseName = "${project.getName()}-$versionName"
+    }
+    signingConfigs {
+        release {
+            storeFile project.findProperty("keystore_path") ? rootProject.file(property("keystore_path")) : null
+            storePassword project.findProperty("keystore_password")
+            keyAlias project.findProperty("key_alias")
+            keyPassword project.findProperty("key_password")
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.release
+        }
+    }
+}
