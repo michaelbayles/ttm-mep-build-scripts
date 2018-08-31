@@ -4,7 +4,7 @@ There are many common elements required by all Mobile Ecosystem apps and compone
 
 ## Referencing the Build Script
 
-Referencing the build script is easy: simply add the Artifactory plugin and apply the script plugin directly from this repository via URL in your module's `build.gradle` file.
+Referencing the build script is easy: simply add the Artifactory plugin and apply the script plugin directly from this repository via URL in your module's `build.gradle` file. If more than one module in your project is going to make use of this script plugin, the Artifactory plugin can be added to the root project's `build.gradle` file instead, but the script plugin must still be applied to each module individually.
 
 First, add the `plugins` block with the Artifactory plugin to the top of the file (or below the `buildscript` block, if present):
 
