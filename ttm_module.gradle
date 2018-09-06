@@ -1,7 +1,11 @@
 buildscript {
+    ext {
+        artifactoryUrl = 'https://artifactory.trimble.tools/artifactory'
+        repositoryKey = 'ttm-mobile-ecosystem-maven'
+    }
     repositories {
         maven {
-            url 'https://artifactory.trimble.tools/artifactory/ttm-mobile-ecosystem-maven'
+            url "${artifactoryUrl}/${repositoryKey}"
             credentials {
                 username = "${artifactory_user}"
                 password = "${artifactory_password}"
@@ -11,10 +15,10 @@ buildscript {
 }
 
 artifactory {
-    contextUrl = "${artifactory_contextUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
+    contextUrl = "${artifactoryUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
     resolve {
         repository {
-            repoKey = 'ttm-mobile-ecosystem-maven'
+            repoKey = "${repositoryKey}"
             username = "${artifactory_user}"
             password = "${artifactory_password}"
             maven = true
