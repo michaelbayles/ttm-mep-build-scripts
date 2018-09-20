@@ -14,6 +14,11 @@ buildscript {
     }
 }
 
+// If a dependency is marked with changing = true, don't cache it
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 artifactory {
     contextUrl = "${artifactoryUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
     resolve {
