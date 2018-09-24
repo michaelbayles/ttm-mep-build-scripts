@@ -19,6 +19,18 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId "com.trimble"
+            version = "1.0-SNAPSHOT"
+            artifactId "ttm-backbone-${project.getName()}"
+
+            artifact("$buildDir/outputs/aar/${project.getName()}-1.0-release.aar")
+        }
+    }
+}
+
 artifactory {
     contextUrl = "${artifactoryUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
     resolve {
@@ -28,6 +40,24 @@ artifactory {
             password = "${artifactory_password}"
             maven = true
 
+        }
+    }
+
+    publish {
+        repository {
+            repoKey = 'ttm-mobile-ecosystem-snapshot-maven'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+
+        }
+
+        defaults {
+            publishArtifacts = true
+            publications('aar')
+
+            // Publishes everything by default so just turn off what's not desired
+            publishIvy = false
         }
     }
 }
