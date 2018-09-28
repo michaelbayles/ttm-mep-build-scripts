@@ -1,7 +1,7 @@
 enum BuildType {
-    DEVELOPMENT("-SNAPSHOT"), BETA("-BETA"), RELEASE("")
+    DEVELOP("-SNAPSHOT"), BETA("-BETA"), RELEASE(""), FEATURE("-FEATURE")
 
-    BuildType(String classifier) { this.classifier = classifier}
+    BuildType(String classifier) { this.classifier = classifier }
     private final String classifier
 
     String toString() { return classifier }
@@ -15,8 +15,10 @@ enum BuildType {
         } else if (branch.startsWith("release/") || branch.startsWith("hotfix/")) {
             //Both releases and hotfixes are prereleases - a new version that will show up as a full release later
             return BETA
+        } else if (branch.equals("develop")) {
+            return DEVELOP
         } else {
-            return DEVELOPMENT
+            return FEATURE
         }
     }
 }
@@ -57,4 +59,8 @@ artifactory {
             publishIvy = false
         }
     }
+}
+
+tasks.matching { it.name == "artifactoryPublish" }.all {
+    onlyIf { buildType != BuildType.FEATURE }
 }

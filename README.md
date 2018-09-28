@@ -87,3 +87,4 @@ The branch name will determine the classifier and corresponding repository to pu
 | release/* | BETA       | ttm-mobile-ecosystem-snapshot-maven |
 | hotfix/*  | BETA       | ttm-mobile-ecosystem-snapshot-maven |
 | develop   | SNAPSHOT   | ttm-mobile-ecosystem-snapshot-maven |
+| *         | FEATURE    | not published
