@@ -59,3 +59,31 @@ This repository is specifically laid out to make it easy to add new features and
 A new version branch would only ever be created if a significant change is being made which would have a major impact on consumers of the script plugin. In most cases, this is likely because the build scripts that include the script plugin would need to change themselves, but this would also apply if there would be a fundamental change to the artifacts being produced that would need consideration before updating an app's build script.
 
 Once a new version exists, only bug fixes should ever be added to older versions. These bug fixes should be merged into newer versions if they are still applicable.
+
+## Publishing
+
+If your project will be publishing an AAR, you will also need to apply the [ttm_module_publish gradle file](ttm_module_publish.gradle):
+
+```gradle
+apply from: 'https://www.github.com/geotracsystems/ttm-mep-build-scripts/raw/master/ttm_module_publish.gradle'
+```
+
+Additionally, you will need to set a `version` property in the root project:
+
+```gradle
+version="1.0"
+```
+
+This `version` property will be used in the `versionName` as well as the metadata used in Artifactory. If the `buildNumber` property is also set, it will be appended onto `versionName` in the format `"{version}.{buildNumber}"`
+
+`versionCode` will be set by the `buildNumber` property, which the CI system should inject. Otherwise, it will default to 1.
+
+The branch name will determine the classifier and corresponding repository to publish to:
+
+
+| Branch    | Classifier | Repository                          |
+|  ---      |     ---    |     ---                             |
+| master    |            | ttm-mobile-ecosystem-release-maven  |
+| release/* | BETA       | ttm-mobile-ecosystem-snapshot-maven |
+| hotfix/*  | BETA       | ttm-mobile-ecosystem-snapshot-maven |
+| develop   | SNAPSHOT   | ttm-mobile-ecosystem-snapshot-maven |
