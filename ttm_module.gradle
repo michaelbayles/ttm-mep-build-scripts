@@ -34,7 +34,7 @@ artifactory {
 android {
     defaultConfig {
         versionName = "${rootProject.version}${project.hasProperty('buildNumber') ? '.' + buildNumber : ''}"
-        versionCode = "${project.findProperty('buildNumber') ?: 1}"
+        versionCode = "${project.findProperty('buildNumber') ?: 1}" as Integer
     }
     signingConfigs {
         release {
