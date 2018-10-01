@@ -35,8 +35,8 @@ publishing {
     publications {
         aar(MavenPublication) {
             groupId 'com.trimble'
-            version = "${rootProject.version}${buildType.toString()}"
-            artifactId "${rootProject.name}-${project.getName()}"
+            version "${rootProject.version}${buildType.toString()}"
+            artifactId "${project.hasProperty('repo') ? repo + '-' : ''}${project.getName()}"
 
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
         }

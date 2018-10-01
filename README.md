@@ -68,9 +68,15 @@ If your project will be publishing an AAR, you will also need to apply the [ttm_
 apply from: 'https://www.github.com/geotracsystems/ttm-mep-build-scripts/raw/master/ttm_module_publish.gradle'
 ```
 
-Additionally, you will need to set a `version` property in the root project:
+Additionally, you will need to set a `version` property at the top level of the root `build.gradle` file:
 
 ```gradle
+/* There should be lines like this here:
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+*/
+
 version="1.0"
 ```
 
