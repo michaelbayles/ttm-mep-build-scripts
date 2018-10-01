@@ -38,7 +38,7 @@ publishing {
             version "${rootProject.version}${buildType.toString()}"
             artifactId "${project.hasProperty('repo') ? repo + '-' : ''}${project.getName()}"
 
-            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            artifact("$buildDir/outputs/aar/${archivesBaseName}-release.aar")
         }
     }
 }
