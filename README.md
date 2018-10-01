@@ -65,7 +65,7 @@ Once a new version exists, only bug fixes should ever be added to older versions
 If your project will be publishing an AAR, you will also need to apply the [ttm_module_publish gradle file](ttm_module_publish.gradle):
 
 ```gradle
-apply from: 'https://www.github.com/geotracsystems/ttm-mep-build-scripts/raw/master/ttm_module_publish.gradle'
+apply from: 'https://www.github.com/geotracsystems/ttm-mep-build-scripts/raw/version/1/ttm_module_publish.gradle'
 ```
 
 Additionally, you will need to set a `version` property at the top level of the root `build.gradle` file:
