@@ -1,0 +1,66 @@
+enum BuildType {
+    DEVELOP("-SNAPSHOT"), BETA("-BETA"), RELEASE(""), FEATURE("-FEATURE")
+
+    BuildType(String classifier) { this.classifier = classifier }
+    private final String classifier
+
+    String toString() { return classifier }
+
+    static fromBranch(String branch) {
+        // We use git flow - http://nvie.com/posts/a-successful-git-branching-model/
+        // The defaults use release/, hotfix/, etc instead of release- and hotfix- mentioned above
+        if (branch.equals("master")) {
+            //Our only releases are on master
+            return RELEASE
+        } else if (branch.startsWith("release/") || branch.startsWith("hotfix/")) {
+            //Both releases and hotfixes are prereleases - a new version that will show up as a full release later
+            return BETA
+        } else if (branch.equals("develop")) {
+            return DEVELOP
+        } else {
+            return FEATURE
+        }
+    }
+}
+
+apply plugin: 'maven-publish'
+
+ext {
+    buildType = BuildType.fromBranch(project.findProperty('branch') ?: 'feature')
+    artifactoryUrl = 'https://artifactory.trimble.tools/artifactory'
+    publishRepositoryKey = "ttm-mobile-ecosystem-${buildType == BuildType.RELEASE ? 'release' : 'snapshot'}-maven"
+}
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId 'com.trimble'
+            version "${rootProject.version}${buildType.toString()}"
+            artifactId "${project.hasProperty('repo') ? repo + '-' : ''}${project.getName()}"
+
+            artifact("$buildDir/outputs/aar/${archivesBaseName}-release.aar")
+        }
+    }
+}
+
+artifactory {
+    publish {
+        repository {
+            repoKey = "${publishRepositoryKey}"
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+        }
+        defaults {
+            publishArtifacts = true
+            publications('aar')
+
+            // Publishes everything by default so just turn off what's not desired
+            publishIvy = false
+        }
+    }
+}
+
+tasks.matching { it.name == "artifactoryPublish" }.all {
+    onlyIf { buildType != BuildType.FEATURE }
+}
