@@ -33,9 +33,6 @@ artifactory {
 }
 
 android {
-    defaultConfig {
-        archivesBaseName = "${project.getName()}-$versionName"
-    }
     signingConfigs {
         release {
             storeFile project.findProperty("keystore_path") ? rootProject.file(property("keystore_path")) : null
