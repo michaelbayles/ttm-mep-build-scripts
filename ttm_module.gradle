@@ -36,6 +36,7 @@ android {
     defaultConfig {
         archivesBaseName = "${project.getName()}-$versionName"
         versionName = "${rootProject.version}${project.hasProperty('buildNumber') ? '.' + buildNumber : ''}"
+        versionCode = "${project.findProperty('buildNumber') ?: 1}" as Integer
     }
     signingConfigs {
         release {
