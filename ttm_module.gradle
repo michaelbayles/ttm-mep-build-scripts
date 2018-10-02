@@ -35,6 +35,7 @@ artifactory {
 android {
     defaultConfig {
         archivesBaseName = "${project.getName()}-$versionName"
+        versionName = "${rootProject.version}${project.hasProperty('buildNumber') ? '.' + buildNumber : ''}"
     }
     signingConfigs {
         release {
