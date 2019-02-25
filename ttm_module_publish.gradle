@@ -27,8 +27,8 @@ apply plugin: 'maven-publish'
 
 ext {
     buildType = BuildType.fromBranch(project.findProperty('branch') ?: 'feature')
-    artifactoryUrl = 'https://artifactory.trimble.tools/artifactory'
-    publishRepositoryKey = "ttm-mobile-ecosystem-${buildType == BuildType.RELEASE ? 'release' : 'snapshot'}-maven"
+    artifactoryUrl = project.findProperty('artifactory_contextUrl') ?: 'https://artifactory.trimble.tools/artifactory'
+    publishRepositoryKey = project.findProperty('publishRepositoryKey') ?: "ttm-mobile-ecosystem-${buildType == BuildType.RELEASE ? 'release' : 'snapshot'}-maven"
 }
 
 publishing {

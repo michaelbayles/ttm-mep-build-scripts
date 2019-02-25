@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        artifactoryUrl = 'https://artifactory.trimble.tools/artifactory'
-        repositoryKey = 'ttm-mobile-ecosystem-maven'
+        artifactoryUrl = project.findProperty('artifactory_contextUrl') ?: 'https://artifactory.trimble.tools/artifactory'
+        repositoryKey = project.findProperty('repositoryKey') ?: 'ttm-mobile-ecosystem-maven'
     }
     repositories {
         maven {
