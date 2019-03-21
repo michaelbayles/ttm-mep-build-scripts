@@ -1,52 +1,19 @@
 buildscript {
-    ext {
-        artifactoryUrl = project.findProperty('artifactory_contextUrl') ?: 'https://artifactory.trimble.tools/artifactory'
-        repositoryKey = project.findProperty('repositoryKey') ?: 'ttm-mobile-ecosystem-maven'
-    }
     repositories {
+        google()
+        jcenter()
         maven {
-            url "${artifactoryUrl}/${repositoryKey}"
+            url "https://artifactory.trimble.tools/artifactory/ttm-mobile-ecosystem-maven"
             credentials {
                 username = "${artifactory_user}"
                 password = "${artifactory_password}"
             }
         }
     }
-}
-
-// If a dependency is marked with changing = true, don't cache it
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-}
-
-artifactory {
-    contextUrl = "${artifactoryUrl}"   //The base Artifactory URL if not overridden by the publisher/resolver
-    resolve {
-        repository {
-            repoKey = "${repositoryKey}"
-            username = "${artifactory_user}"
-            password = "${artifactory_password}"
-            maven = true
-        }
+    dependencies {
+        classpath 'com.trimble:infrastructure-gradle-plugins-plugin:1.0.0'
     }
 }
 
-android {
-    defaultConfig {
-        versionName = "${rootProject.version}${project.hasProperty('buildNumber') ? '.' + buildNumber : ''}"
-        versionCode = "${project.findProperty('buildNumber') ?: 1}" as Integer
-    }
-    signingConfigs {
-        release {
-            storeFile project.findProperty("keystore_path") ? rootProject.file(property("keystore_path")) : null
-            storePassword project.findProperty("keystore_password")
-            keyAlias project.findProperty("key_alias")
-            keyPassword project.findProperty("key_password")
-        }
-    }
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.release
-        }
-    }
-}
+apply plugin: com.trimble.ttm.mep.plugins.GitflowPlugin
+apply plugin: com.trimble.ttm.mep.plugins.TtmMepAndroidPlugin
